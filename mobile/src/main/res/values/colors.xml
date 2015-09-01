@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="config_main">#ff0ea8c6</color>
+
+    <color name="primary">@color/material_indigo_500</color>
+    <color name="primary_dark" >@color/material_indigo_700</color>
+    <color name="accent">@color/material_pink_100</color>
+    <color name="refresh_button">#FF6D3F</color>
+    <color name="theme_button_stroke">#ff3d3e3d</color>
+    <color name="theme_button_stroke_press">#ff292a29</color>
+
+
+</resources>

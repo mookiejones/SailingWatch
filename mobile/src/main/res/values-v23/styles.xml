@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Theme.Base" parent="android:Theme.DeviceDefault.Light.DarkActionBar" />
+
+    <style name="AppTheme" parent="Theme.Base" >
+    </style>
+
+    <style name="ConfigTheme" parent="Theme.Base" >
+        <item name="android:icon">@android:color/transparent</item>
+    </style>
+
+</resources>
