@@ -34,6 +34,7 @@ class ConverterUtil
      * @param b the divisor
      * @return {@code a mod b}
      */
+    @SuppressWarnings("SameParameterValue")
     public static float mod(float a, float b) {
         return (a % b + b) % b;
     }

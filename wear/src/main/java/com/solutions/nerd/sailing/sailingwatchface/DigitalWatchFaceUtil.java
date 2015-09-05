@@ -14,7 +14,7 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 
-public final class DigitalWatchFaceUtil {
+final class DigitalWatchFaceUtil {
     private static final String TAG = "DigitalWatchFaceUtil";
 
     /**

@@ -59,7 +59,7 @@ public class SailingConfigurationActivity extends Activity implements
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
                 if (!insets.isRound()) {
                     v.setPaddingRelative(
-                            (int) getResources().getDimensionPixelSize(R.dimen.content_padding_start),
+                            getResources().getDimensionPixelSize(R.dimen.content_padding_start),
                             v.getPaddingTop(),
                             v.getPaddingEnd(),
                             v.getPaddingBottom());

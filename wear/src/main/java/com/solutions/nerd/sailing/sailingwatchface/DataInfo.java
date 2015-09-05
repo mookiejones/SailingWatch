@@ -114,7 +114,7 @@ import java.util.Set;
 public class DataInfo {
     public final static int Imperial=0;
     public final static int Metric=1;
-    public static final int Nautical=2;
+    private static final int Nautical=2;
 
     private String mSunride;
     private String mSunset;

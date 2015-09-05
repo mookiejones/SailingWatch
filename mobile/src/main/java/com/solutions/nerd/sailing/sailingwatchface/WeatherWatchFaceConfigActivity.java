@@ -38,18 +38,18 @@ import java.util.List;
 public class WeatherWatchFaceConfigActivity extends Activity {
 // ------------------------------ FIELDS ------------------------------
 
-    public static final String KEY_CONFIG_REQUIRE_INTERVAL = "RequireInterval";
-    public static final String KEY_CONFIG_TEMPERATURE_SCALE = "TemperatureScale";
-    public static final String KEY_CONFIG_THEME = "Theme";
-    public static final String KEY_CONFIG_TIMEUNIT = "TimeUnit";
+    private static final String KEY_CONFIG_REQUIRE_INTERVAL = "RequireInterval";
+    private static final String KEY_CONFIG_TEMPERATURE_SCALE = "TemperatureScale";
+    private static final String KEY_CONFIG_THEME = "Theme";
+    private static final String KEY_CONFIG_TIMEUNIT = "TimeUnit";
     private static final String TAG = "WeatherWatchFaceConfig";
-    public static final String PATH_CONFIG = "/WeatherWatchFace/Config/";
+    private static final String PATH_CONFIG = "/WeatherWatchFace/Config/";
     private static final int TIMEUNIT12 = 0;
     private static final int TIMEUNIT24 = 1;
-    private List<Integer> themes = new ArrayList<>();
-    private List<View> themeButtons = new ArrayList<>();
+    private final List<Integer> themes = new ArrayList<>();
+    private final List<View> themeButtons = new ArrayList<>();
 
-    ResultCallback<DataApi.DataItemResult> getDataCallback = new ResultCallback<DataApi.DataItemResult>() {
+    private final ResultCallback<DataApi.DataItemResult> getDataCallback = new ResultCallback<DataApi.DataItemResult>() {
         @Override
         public void onResult(DataApi.DataItemResult result) {
             if (result.getStatus().isSuccess() && result.getDataItem() != null) {
@@ -127,7 +127,7 @@ public class WeatherWatchFaceConfigActivity extends Activity {
         }
     };
 
-    View.OnClickListener onColorViewClick = new View.OnClickListener() {
+    private final View.OnClickListener onColorViewClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             mTheme = (int) v.getTag();

@@ -3,7 +3,8 @@ package com.solutions.nerd.sailing.sailingwatchface;
 /**
  * Created by mookie on 8/28/15.
  */
-public class Consts {
+class Consts {
+    public static final String WEATHER_URL= "http://api.wunderground.com/api/b52ad4185dacf690/conditions/q/";
     public static final String KEY_LOCATION_LATITUDE="Latitude";
     public static final String KEY_LOCATION_LONGITUDE="Longitude";
     public static final String KEY_LOCATION_BEARING="Bearing";

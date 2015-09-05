@@ -30,20 +30,8 @@ public class WeatherMessageReceiverService extends WearableListenerService
     private static final String TAG = WeatherMessageReceiverService.class.getSimpleName();
 
     private GoogleApiClient mGoogleApiClient;
+    private static String weather;
 
-
-
-    private static double latitude;
-    private static double longitude;
-    private static double bearing;
-    private static float altitude;
-    private double speed;
-    private long time;
-
-    private static String condition;
-    private static String temperature;
-    private static long sunrise;
-    private static long sunset;
     private static int temperature_scale;
     private static int theme = 3;
     private static int time_unit;
@@ -93,30 +81,12 @@ public class WeatherMessageReceiverService extends WearableListenerService
 
 
         if (path.equals(Consts.PATH_WEATHER_INFO)) {
-
-            if (dataMap.containsKey(Consts.KEY_WEATHER_CONDITION)) {
-                condition = dataMap.getString(Consts.KEY_WEATHER_CONDITION);
-            }
-
-            if (dataMap.containsKey(Consts.KEY_WEATHER_TEMPERATURE)) {
-                String temp = dataMap.getString(Consts.KEY_WEATHER_TEMPERATURE);
-                Log.e(TAG,"Temperature is "+temp);
-                temperature = dataMap.getString(Consts.KEY_WEATHER_TEMPERATURE);
-            }
-
-            if (dataMap.containsKey(Consts.KEY_WEATHER_SUNRISE)) {
-                sunrise = dataMap.getLong(Consts.KEY_WEATHER_SUNRISE);
-            }
-
-            if (dataMap.containsKey(Consts.KEY_WEATHER_SUNSET)) {
-                sunset = dataMap.getLong(Consts.KEY_WEATHER_SUNSET);
+            if (dataMap.containsKey("weather")){
+                weather = dataMap.getString("weather");
+                config.putString("weather",weather);
             }
 
             config.putLong(Consts.KEY_WEATHER_UPDATE_TIME, System.currentTimeMillis());
-            config.putString(Consts.KEY_WEATHER_CONDITION, condition);
-            config.putString(Consts.KEY_WEATHER_TEMPERATURE, temperature);
-            config.putLong(Consts.KEY_WEATHER_SUNRISE, sunrise);
-            config.putLong(Consts.KEY_WEATHER_SUNSET, sunset);
         } else {
             if (!alreadyInitialize) {
                 Wearable.NodeApi.getLocalNode(mGoogleApiClient).setResultCallback(new ResultCallback<NodeApi.GetLocalNodeResult>() {
@@ -188,21 +158,7 @@ public class WeatherMessageReceiverService extends WearableListenerService
     }
 
     protected void fetchConfig(DataMap config) {
-        if (config.containsKey(Consts.KEY_WEATHER_CONDITION)) {
-            condition = config.getString(Consts.KEY_WEATHER_CONDITION);
-        }
 
-        if (config.containsKey(Consts.KEY_WEATHER_TEMPERATURE)) {
-            temperature = config.getString(Consts.KEY_WEATHER_TEMPERATURE);
-        }
-
-        if (config.containsKey(Consts.KEY_WEATHER_SUNRISE)) {
-            sunrise = config.getLong(Consts.KEY_WEATHER_SUNRISE);
-        }
-
-        if (config.containsKey(Consts.KEY_WEATHER_SUNSET)) {
-            sunset = config.getLong(Consts.KEY_WEATHER_SUNSET);
-        }
 
         if (config.containsKey(Consts.KEY_CONFIG_TEMPERATURE_SCALE)) {
             temperature_scale = config.getInt(Consts.KEY_CONFIG_TEMPERATURE_SCALE);

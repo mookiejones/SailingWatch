@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "com.solutions.nerd.sailing.sailingwatchface"
         minSdkVersion 21
@@ -16,13 +15,22 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            jniDebuggable true
+        }
+    }
+    productFlavors {
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
-    compile 'com.google.android.gms:play-services:7.8.0'
-    compile 'com.google.android.gms:play-services-ads:7.8.0'
 
+    compile 'com.google.android.gms:play-services:7.8.+'
+
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.android.support:support-v4:23+'
+    compile 'com.android.support:design:23.0.0'
 }
