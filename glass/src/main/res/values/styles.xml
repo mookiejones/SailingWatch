@@ -1,0 +1,17 @@
+<resources>
+    <style name="MenuTheme" parent="@android:style/Theme.DeviceDefault">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="labelStyle"  parent="@android:style/Theme.DeviceDefault">
+        <item name="android:layout_column">0</item>
+
+    </style>
+
+    <style name="valueStyle"  parent="@android:style/Theme.DeviceDefault">
+        <item name="android:layout_column">1</item>
+    </style>
+</resources>
