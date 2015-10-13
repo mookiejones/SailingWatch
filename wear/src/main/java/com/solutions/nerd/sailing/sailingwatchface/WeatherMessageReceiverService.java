@@ -3,25 +3,21 @@ package com.solutions.nerd.sailing.sailingwatchface;
 
 
         import android.content.pm.PackageManager;
-        import android.location.Location;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.util.Log;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
 
-        import com.google.android.gms.common.ConnectionResult;
-        import com.google.android.gms.common.api.GoogleApiClient;
-        import com.google.android.gms.common.api.Result;
-        import com.google.android.gms.common.api.ResultCallback;
-        import com.google.android.gms.common.api.Status;
-
-        import com.google.android.gms.wearable.DataApi;
-        import com.google.android.gms.wearable.DataMap;
-        import com.google.android.gms.wearable.DataMapItem;
-        import com.google.android.gms.wearable.MessageEvent;
-        import com.google.android.gms.wearable.NodeApi;
-        import com.google.android.gms.wearable.PutDataMapRequest;
-        import com.google.android.gms.wearable.Wearable;
-        import com.google.android.gms.wearable.WearableListenerService;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.Wearable;
+import com.google.android.gms.wearable.WearableListenerService;
 
 public class WeatherMessageReceiverService extends WearableListenerService
         implements GoogleApiClient.ConnectionCallbacks,
@@ -30,7 +26,12 @@ public class WeatherMessageReceiverService extends WearableListenerService
     private static final String TAG = WeatherMessageReceiverService.class.getSimpleName();
 
     private GoogleApiClient mGoogleApiClient;
-    private static String weather;
+
+    private static final String WEATHER_KEY="weather";
+    private static final String BEARING_KEY="bearing";
+    private static final String LATITUDE_KEY="latitude";
+    private static final String LONGITUDE_KEY="longitude";
+    private static final String SPEED_KEY="speed";
 
     private static int temperature_scale;
     private static int theme = 3;
@@ -42,15 +43,14 @@ public class WeatherMessageReceiverService extends WearableListenerService
     @Override
     public void onCreate() {
         super.onCreate();
-        if (!hasGPS()){
-            Log.d(TAG,"This hardware doesn't have GPS");
-        }else{
+
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Wearable.API)  // used for data layer API
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
-        }
+        mGoogleApiClient.connect();
+
     }
 
     private boolean hasGPS(){
@@ -59,8 +59,6 @@ public class WeatherMessageReceiverService extends WearableListenerService
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        Log.d(TAG, "onMessageReceived: " + messageEvent);
-
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Wearable.API)
@@ -74,16 +72,28 @@ public class WeatherMessageReceiverService extends WearableListenerService
 
         path = messageEvent.getPath();
 
+
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(path);
         DataMap config = putDataMapRequest.getDataMap();
 
         DataInfo info = new DataInfo(config);
 
+        if(path.equals(Consts.PATH_LOCATION_INFO)){
+            if(dataMap.containsKey(LATITUDE_KEY))
+                config.putDouble(LATITUDE_KEY,dataMap.getDouble(LATITUDE_KEY));
+            if(dataMap.containsKey(LONGITUDE_KEY))
+                config.putDouble(LONGITUDE_KEY,dataMap.getDouble(LONGITUDE_KEY));
+            if(dataMap.containsKey(SPEED_KEY))
+                config.putFloat(SPEED_KEY,dataMap.getFloat(SPEED_KEY));
+            if(dataMap.containsKey(BEARING_KEY))
+                config.putFloat(BEARING_KEY,dataMap.getFloat(BEARING_KEY));
+        }
+
 
         if (path.equals(Consts.PATH_WEATHER_INFO)) {
-            if (dataMap.containsKey("weather")){
-                weather = dataMap.getString("weather");
-                config.putString("weather",weather);
+            if (dataMap.containsKey(WEATHER_KEY)){
+                String weather = dataMap.getString(WEATHER_KEY);
+                config.putString(WEATHER_KEY, weather);
             }
 
             config.putLong(Consts.KEY_WEATHER_UPDATE_TIME, System.currentTimeMillis());
@@ -150,14 +160,12 @@ public class WeatherMessageReceiverService extends WearableListenerService
                 .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
-                        Log.d(TAG, "SaveConfig: " + dataItemResult.getStatus() + ", " + dataItemResult.getDataItem().getUri());
-
                         mGoogleApiClient.disconnect();
                     }
                 });
     }
 
-    protected void fetchConfig(DataMap config) {
+    private void fetchConfig(DataMap config) {
 
 
         if (config.containsKey(Consts.KEY_CONFIG_TEMPERATURE_SCALE)) {
@@ -191,7 +199,7 @@ public class WeatherMessageReceiverService extends WearableListenerService
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.d(TAG,"onConnectionFailed:"+connectionResult);
     }
 }
 

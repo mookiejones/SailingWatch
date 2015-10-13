@@ -16,9 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,30 +33,66 @@ import com.google.android.gms.wearable.Wearable;
 
 
 public class SailingConfigurationActivity extends Activity implements
-        WearableListView.ClickListener, WearableListView.OnScrollListener {
+        WearableListView.ClickListener, WearableListView.OnScrollListener
+    {
     private static final String TAG = "DigitalWatchFaceConfig";
 
     private GoogleApiClient mGoogleApiClient;
-    private TextView mHeader;
     private NumberPicker mNumberPicker;
+    private Spinner mUnitType;
+    private CheckBox mUseNautical;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_digital_config);
 
-        mHeader = (TextView) findViewById(R.id.header);
-        mNumberPicker=(NumberPicker)findViewById(R.id.number);
-        mNumberPicker.setMinValue(8);
-        mNumberPicker.setMaxValue(18);
 
-        mNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        mUnitType=(Spinner)findViewById(R.id.unit_selection);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.unit_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        mUnitType.setAdapter(adapter);
+
+        mUnitType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.d(TAG,"Value Changed");
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String msg = String.format("Item Changed to %s", position);
+                Log.d(TAG, msg);
+                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                String msg = "Nothing Selected";
+                Log.d(TAG, msg);
+                Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG);
+
             }
         });
-        WearableListView listView = (WearableListView) findViewById(R.id.color_picker);
+
+        mUseNautical=(CheckBox)findViewById(R.id.use_nautical);
+
+
+        mUseNautical.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String msg=String.format("Use Nautical Changed to %s", isChecked);
+                Log.d(TAG,msg);
+                Toast.makeText(getBaseContext(),msg,Toast.LENGTH_LONG);
+
+            }
+        });
+
+
+
+
+
+
+
         BoxInsetLayout content = (BoxInsetLayout) findViewById(R.id.content);
 
         // BoxInsetLayout adds padding by default on round devices. Add some on square devices.
@@ -68,12 +110,6 @@ public class SailingConfigurationActivity extends Activity implements
             }
         });
 
-        listView.setHasFixedSize(true);
-        listView.setClickListener(this);
-        listView.addOnScrollListener(this);
-
-        String[] colors = getResources().getStringArray(R.array.color_array);
-        listView.setAdapter(new ColorListAdapter(colors));
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
@@ -133,7 +169,7 @@ public class SailingConfigurationActivity extends Activity implements
     @Override // WearableListView.OnScrollListener
     public void onAbsoluteScrollChange(int scroll) {
         float newTranslation = Math.min(-scroll, 0);
-        mHeader.setTranslationY(newTranslation);
+//        mHeader.setTranslationY(newTranslation);
     }
 
     @Override // WearableListView.OnScrollListener

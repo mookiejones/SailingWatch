@@ -276,6 +276,7 @@ public class WeatherWatchFaceConfigActivity extends Activity {
     private void initColorButton() {
         int rowSize = this.getResources().getInteger(R.integer.theme_row_size);
         int count = rowSize;
+
         int width = this.mThemeButtonContainer.getWidth() / (rowSize + 1);
         int margin = width / (rowSize + 1);
 

@@ -1,11 +1,11 @@
 package com.solutions.nerd.sailing.sailingwatchface;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
+
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -26,11 +26,11 @@ import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 import android.view.animation.LinearInterpolator;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -61,13 +61,9 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
     private final int watchType = getWatchType();
     private static WeatherClass mWeather;
 
+    private static final int MSG_UPDATE_TIME = 0;
 
     abstract int getWatchType();
-
-
-
-
-
 
 
     public abstract class BaseWatchEngine extends CanvasWatchFaceService.Engine
@@ -75,6 +71,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             GoogleApiClient.ConnectionCallbacks,
             GoogleApiClient.OnConnectionFailedListener,
             DataApi.DataListener,
+            MessageApi.MessageListener,
             NodeApi.NodeListener {
 
         static final String TAG = "BaseWatchEngine";
@@ -82,6 +79,11 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
         BaseWatchEngine() {
             mAnimator = new ValueAnimator();
+            mGoogleApiClient=new GoogleApiClient.Builder(BaseSailingWatchFace.this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Wearable.API)
+                    .build();
         }
 
         /**
@@ -96,9 +98,10 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         @Override
         public void onTouchEvent(MotionEvent event) {
             super.onTouchEvent(event);
-            LogInfo("WatchFaceTouched");
+            Toast.makeText(BaseSailingWatchFace.this,"WatchFaceTouched",Toast.LENGTH_LONG);
 
         }
+
 
         // handler to update the time once a second in interactive mode
         final Handler mUpdateTimeHandler = new Handler() {
@@ -112,9 +115,9 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
                         invalidate();
                         if (shouldTimerBeRunning()) {
                             long timeMs = System.currentTimeMillis();
-                            long delayMs = Consts.INTERACTIVE_UPDATE_RATE_MS
-                                    - (timeMs % Consts.INTERACTIVE_UPDATE_RATE_MS);
+                            long delayMs = Consts.INTERACTIVE_UPDATE_RATE_MS  - (timeMs % Consts.INTERACTIVE_UPDATE_RATE_MS);
                             mUpdateTimeHandler.sendEmptyMessageDelayed(Consts.MSG_UPDATE_TIME, delayMs);
+                            requireWeatherInfo();
                         }
                         break;
                 }
@@ -156,12 +159,16 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         // Time Items
         float mHours, mMinutes, mSeconds;
 
+
         String mDateText;
         float mBearing =170;
+        float mSpeed=0;
+        double mLatitude,mLongitude;
 
 
         int mWidth;
         int mHeight;
+
 
         // This is where ill get the time from
         Calendar mCalendar;
@@ -169,6 +176,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                LogInfo("onReceive");
                 mCalendar.setTimeZone(TimeZone.getDefault());
                 mCalendar.setTimeInMillis(System.currentTimeMillis());
                 invalidate();
@@ -182,36 +190,8 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         private Bitmap mBackgroundScaledBitmap;
         private Bitmap mBackgroundBitmap;
         private boolean mRegisteredTimeZoneReceiver = false;
-        private AsyncTask<Void, Void, Integer> mLoadWeatherTask;
 
-        private void setupAnimator(){
-            Log.d(TAG,"Setting up animator");
-            mAnimator.setInterpolator(new LinearInterpolator());
-            mAnimator.setDuration(250);
 
-            // Notifies us at each frame of the animation so we can redraw the view.
-            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    mBearing = ConverterUtil.mod((Float) mAnimator.getAnimatedValue(), 360.0f);
-                    invalidate();
-                }
-            });
-            // Notifies us when the animation is over. During an animation, the user's head may have
-            // continued to move to a different orientation than the original destination angle of the
-            // animation. Since we can't easily change the animation goal while it is running, we call
-            // animateTo() again, which will either redraw at the new orientation (if the difference is
-            // small enough), or start another animation to the new heading. This seems to produce
-            // fluid results.
-            mAnimator.addListener(new AnimatorListenerAdapter() {
-
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    animateTo(mBearing);
-                }
-            });
-        }
         /**
          * Animates the view to the specified heading, or simply redraws it immediately if the
          * difference between the current heading and new heading are small enough that it wouldn't be
@@ -258,7 +238,6 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
         private void setupUI() {
             Resources resources = BaseSailingWatchFace.this.getResources();
-            setupAnimator();
             mBackgroundPaint = new Paint();
             // Create background paint
             switch (watchType) {
@@ -282,6 +261,17 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
             createPaints();
 
+
+            // Hook to touch event
+            this.setTouchEventsEnabled(true);
+
+        }
+
+
+        @Override
+        public void onDestroy() {
+            mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
+            super.onDestroy();
         }
 
         Paint createTextPaint(int textColor) {
@@ -314,57 +304,53 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             mWeatherPaint = createTextPaint(resources.getColor(R.color.digital_text));
 
         }
+
+        protected Resources mResources;
+        protected AssetManager mAsserts;
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
+            setTouchEventsEnabled(true);
+
             setWatchFaceStyle(new WatchFaceStyle.Builder(BaseSailingWatchFace.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                    .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
                     .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setStatusBarGravity(Gravity.RIGHT | Gravity.TOP)
-                    .setHotwordIndicatorGravity(Gravity.LEFT | Gravity.TOP)
-                            // Just added this to play with
-                    .setPeekOpacityMode(WatchFaceStyle.PEEK_OPACITY_MODE_TRANSLUCENT)
-//                    .setShowSystemUiTime(false)
                     .setShowSystemUiTime(false)
                     .build());
+
+
+            mResources = BaseSailingWatchFace.this.getResources();
+            mAsserts=BaseSailingWatchFace.this.getAssets();
 
             setupUI();
 
             // allocate a Calendar to calculate local time using the UTC time and time zone
             mCalendar = Calendar.getInstance();
 
-            mGoogleApiClient = new GoogleApiClient.Builder(BaseSailingWatchFace.this)
-                    .addOnConnectionFailedListener(this)
-                    .addConnectionCallbacks(this)
-                    .addApi(Wearable.API)
-                    .build();
-
-            // configure the system UI (see next section)
-
-            // load the background image
-            LogInfo("onCreate");
-
-
+            mRequireInterval = mResources.getInteger(R.integer.weather_default_require_interval);
+            mWeatherInfoRequiredTime = System.currentTimeMillis() - (DateUtils.SECOND_IN_MILLIS * 58);
             mGoogleApiClient.connect();
         }
 
 
         @Override
         public void onPeerConnected(Node node) {
-            LogInfo("onPeerConnected");
+            LogInfo("onPeerConnected name:"+node.getDisplayName()+" id:"+node.getId());
             requireWeatherInfo();
         }
 
         @Override
         public void onPeerDisconnected(Node node) {
-            LogInfo("onPeerDisconnected");
+            LogInfo("onPeerDisconnected name:"+node.getDisplayName()+" id:"+node.getId());
         }
+
 
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
 
-            LogDebug(TAG, "onVisibilityChanged: " + visible);
+            LogDebug("onVisibilityChanged: " + visible);
 
             if (visible) {
                 mGoogleApiClient.connect();
@@ -376,9 +362,15 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
                 animateTo(b);
                 updateTime();
             } else {
+                if (mGoogleApiClient!=null && mGoogleApiClient.isConnected()){
+                    Wearable.NodeApi.removeListener(mGoogleApiClient,this);
+//                    Wearable.MessageApi.removeListener(mGoogleApiClient,this);
+                    Wearable.DataApi.removeListener(mGoogleApiClient,this);
+                    mGoogleApiClient.disconnect();
+
+                }
                 unregisterReceiver();
                 //              mLoadWeatherHandler.removeMessages(MSG_GET_WEATHER);
-                cancelLoadWeatherTask();
             }
 
             // Whether the timer should be running depends on whether we're visible (as well as
@@ -389,10 +381,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
         }
 
-        private void cancelLoadWeatherTask() {
-            if (mLoadWeatherTask != null)
-                mLoadWeatherTask.cancel(true);
-        }
+
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -409,13 +398,16 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             if (mRegisteredTimeZoneReceiver) {
                 return;
             }
+            mRegisteredTimeZoneReceiver = true;
+
+
+
             Wearable.DataApi.addListener(mGoogleApiClient, this);
             Wearable.NodeApi.addListener(mGoogleApiClient, this);
 
-            mRegisteredTimeZoneReceiver = true;
 
-            IntentFilter mWeatherFilter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
             IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
+            filter.addAction(Intent.ACTION_LOCALE_CHANGED);
             BaseSailingWatchFace.this.registerReceiver(mTimeZoneReceiver, filter);
         }
 
@@ -439,7 +431,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
                     .setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
                         @Override
                         public void onResult(MessageApi.SendMessageResult sendMessageResult) {
-                            LogInfo("SendRequireMessage:" + sendMessageResult.getStatus());
+//                            LogInfo("SendRequireMessage:" + sendMessageResult.getStatus());
                         }
                     });
         }
@@ -449,16 +441,26 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         long mWeatherInfoReceivedTime;
         int mRequireInterval;
 
-        private void sendMessage(final String path){
+        private class MessageResults implements ResultCallback<MessageApi.SendMessageResult> {
+
+            @Override
+            public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+                Log.d(TAG, "Send Require Message for sendMessage:" + sendMessageResult.getStatus());
+            }
+        }
+        private  final MessageResults MyMessageResults=new MessageResults();
+        private void sendMessage(){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     NodeApi.GetConnectedNodesResult nodes= Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
                     for(Node node:nodes.getNodes()){
-                        MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-                                mGoogleApiClient, node.getId(), BaseWatchEngine.TAG, Consts.PATH_WEATHER.getBytes() ).await();
-                    }
 
+
+                        if(node.isNearby())
+                            Wearable.MessageApi.sendMessage(mGoogleApiClient,node.getId(),Consts.PATH_WEATHER_REQUIRE,null)
+                                    .setResultCallback(MyMessageResults);
+                    }
                }
 
             }).start();
@@ -466,11 +468,14 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onConnected(Bundle bundle) {
-            sendMessage(TAG);
+            LogDebug("onConnected");
+
+            sendMessage();
 
             getConfig();
             Wearable.NodeApi.addListener(mGoogleApiClient, this);
-
+            Wearable.DataApi.addListener(mGoogleApiClient,this);
+            Wearable.MessageApi.addListener(mGoogleApiClient,this);
 
             requireWeatherInfo();
             mGoogleApiClient.connect();
@@ -484,7 +489,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onConnectionSuspended(int i) {
-            LogInfo("Connection Suspended");
+            Log.d(TAG, "onConnectionSuspended");
         }
 
         @Override
@@ -493,9 +498,25 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
                 DataMap dataMap = DataMap.fromByteArray(event.getDataItem().getData());
                 String eventUri = event.getDataItem().getUri().toString();
 
-                if (eventUri.contains ("/weather")) {
+                if (eventUri.contains("/LocationInfo")){
+                    Log.d(TAG,"Got Location Info"+dataMap);
+                    if (dataMap.containsKey("speed"))
+                        mSpeed=dataMap.getFloat("speed");
+
+                    if (dataMap.containsKey("bearing"))
+                        mBearing=dataMap.getFloat("bearing");
+
+                    if (dataMap.containsKey("latitude"))
+                        mLatitude=dataMap.getDouble("latitude");
+                    if (dataMap.containsKey("longitude"))
+                        mLongitude=dataMap.getDouble("longitude");
+                }
+                if (eventUri.contains ("/WeatherInfo")) {
                     DataMapItem dataItem = DataMapItem.fromDataItem (event.getDataItem());
                     String[] data = dataItem.getDataMap().getStringArray("contents");
+                    Log.d(TAG,"Getting Weather Info data:"+data);
+
+
                 }
             }
         }
@@ -513,11 +534,11 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             BaseSailingWatchFace.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
-        void LogDebug(String tag, String msg) {
+        void LogDebug(String msg) {
             if (!BuildConfig.DEBUG)
                 return;
-            if (Log.isLoggable(tag, Log.DEBUG))
-                Log.d(tag, msg);
+            if (Log.isLoggable(BaseWatchEngine.TAG, Log.DEBUG))
+                Log.d(BaseWatchEngine.TAG, msg);
         }
 
         void LogInfo(String msg) {
@@ -533,7 +554,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             mLocationPaint.setTypeface(burnInProtection ? NORMAL_TYPEFACE : Consts.BOLD_TYPEFACE);
 
             mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
-            LogDebug(TAG, "onPropertiesChanged: burn-in protection = " + burnInProtection
+            LogDebug("onPropertiesChanged: burn-in protection = " + burnInProtection
                     + ", low-bit ambient = " + mLowBitAmbient);
         }
 
@@ -542,6 +563,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             super.onTimeTick();
             updateTime();
             requireWeatherInfo();
+            getConfig();
 
             // Compute rotations and lengths for the clock hands.
             invalidate();
@@ -582,7 +604,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         public void onApplyWindowInsets(WindowInsets insets) {
             super.onApplyWindowInsets(insets);
 
-            LogDebug(TAG, "onApplyWindowInsets");
+            LogDebug("onApplyWindowInsets");
             // Load resources that have alternate values for round watches.
             Resources resources = BaseSailingWatchFace.this.getResources();
             boolean isRound = insets.isRound();
@@ -650,13 +672,15 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             if (watchType == Consts.DIGITAL) {
                 float textZ = bounds.exactCenterY() - 60;
                 textZ = bounds.height() - 80;
-                canvas.drawText(digitalText, (mWidth - textWidth) / 2, textZ-90, mTimePaint);
-                canvas.drawText(mDateText, (mWidth - dateWidth) / 2, textZ - 30, mLocationPaint);
+
+                canvas.drawText(digitalText, (mWidth - textWidth) / 2, textZ-120, mTimePaint);
+                canvas.drawText(mDateText, (mWidth - dateWidth) / 2, textZ - 100, mLocationPaint);
             }
 
             drawWeatherInfo(canvas,bounds);
 
             drawCompass(canvas, bounds);
+
 //            drawBearing(canvas, bounds);
         }
 
@@ -664,31 +688,67 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             if (mWeather==null)
                 return;
 
-            String temp=mWeather.getTempString();
+            String temp=mWeather.getWeatherString();
+
             drawText(temp, bounds, canvas, 100);
 
             String wind = mWeather.windString();
-            drawText(wind,bounds,canvas,80);
+            drawText(wind, bounds, canvas, 80);
+
+            String city_state = mWeather.getCity();
+
+
+            if (mWeather.getIcon()!=null){
+                String icon="got icon";
+                drawText(icon,bounds,canvas,15);
+            }
+
+
+
+            drawText(city_state, bounds, canvas, 0);
+
+
+//            String time=mWeather.getTime();
+//            drawText(time, bounds, canvas,60);
+
+
+            drawSpeed(bounds, canvas);
+
+        }
+        private void drawSpeed(Rect bounds,Canvas canvas){
+            float left=bounds.width()/4;
+            String bearing = String.format("Bearing: %.2f",mBearing);
+            drawLeft(bearing,bounds,canvas,0);
+            String speed = String.format("Speed: %.1f",ConverterUtil.convertKMToKnots(mSpeed));
+            drawLeft(speed,bounds,canvas,20);
+            String lat=String.format("latitude: %.2f",mLatitude);
+            drawLeft(lat,bounds,canvas,40);
+            String lon=String.format("longitude: %.2f",mLongitude);
+            drawLeft(lon,bounds,canvas,60);
+
+
+        }
+
+        private void drawLeft(String text,Rect bounds,Canvas canvas,float height){
+            float width=mWeatherPaint.measureText(text);
+            float x=(mWidth-width)/4;
+            float y=bounds.exactCenterY()+height;
+            canvas.drawText(text,x,y,mWeatherPaint);
+
         }
         private void drawText(String text,Rect bounds,Canvas canvas,float offset){
             float width=mWeatherPaint.measureText(text);
             float x=(mWidth-width)/2;
             float y=bounds.exactCenterY()+offset;
-            canvas.drawText(text,x,y,mWeatherPaint);
+            canvas.drawText(text, x, y, mWeatherPaint);
 
         }
 
         private void drawBearing(Canvas canvas,Rect bounds){
             final float cx = bounds.exactCenterX();
             final float cy = bounds.exactCenterY();
-            int width = bounds.width();
-            int height = bounds.height();
 
-            // Find the center. Ignore the window insets so that, on round watches with a
-            // "chin", the watch face is centered on the entire screen, not just the usable
-            // portion.
-            float centerX = width / 2f;
-            float centerY = height / 2f;
+
 
 
             canvas.save();
@@ -755,20 +815,19 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
 
         void fetchConfig(DataMap config) {
             DataInfo info =new DataInfo(config);
-            LogInfo("fetchConfig: " + config);
+            if (!BuildConfig.DEBUG)
+                LogInfo("fetchConfig: " + config);
             if (config.containsKey("weather")){
-                Gson gson = new Gson();
                 String weatherString = config.getString("weather");
-                try {
-                    mWeather = gson.fromJson(weatherString, WeatherClass.class);
-                    Log.e(TAG,String.format("I Finally have the weather %s:",mWeather));
-                }catch(Exception e){
-                    Log.e(TAG,e.getMessage());
+                WeatherTask task = new WeatherTask();
+                if (config.containsKey("icon")&&mWeather!=null)
+                {
+                    mWeather.setIcon(config.getByteArray("icon"));
+
                 }
+                task.execute(weatherString);
 
             }
-            if (config.containsKey("Temperature"))
-                mTemperature=config.getString("Temperature");
         }
 
         void getConfig() {
@@ -810,7 +869,7 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
         }
 
         private void updateTimer() {
-            LogDebug(TAG, "updateTimer");
+            LogDebug("updateTimer");
 
             mUpdateTimeHandler.removeMessages(Consts.MSG_UPDATE_TIME);
             if (shouldTimerBeRunning()) {
@@ -818,36 +877,51 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
             }
         }
 
+        private void updateConfigDataItemAndUiOnStartup(){
+            DigitalWatchFaceUtil.fetchConfigDataMap(mGoogleApiClient,
+            new DigitalWatchFaceUtil.FetchConfigDataMapCallback(){
+                @Override
+            public void onConfigDataMapFetched(DataMap startupConfig){
+                    // If the DataItem hasn't been created yet or some keys are missing,
+                    // use the default values.
+                    setDefaultValuesForMissingConfigKeys(startupConfig);
+                    DigitalWatchFaceUtil.putConfigDataItem(mGoogleApiClient, startupConfig);
+
+                    updateUiForConfigDataMap(startupConfig);
+
+                }
+            });
+        }
+        private void setDefaultValuesForMissingConfigKeys(DataMap config) {
+//            addIntKeyIfMissing(config, DigitalWatchFaceUtil.KEY_BACKGROUND_COLOR,
+//                    DigitalWatchFaceUtil.COLOR_VALUE_DEFAULT_AND_AMBIENT_BACKGROUND);
+
+        }
+        private void updateUiForConfigDataMap(final DataMap config) {
+            boolean uiUpdated = false;
+            for (String configKey : config.keySet()) {
+                if (!config.containsKey(configKey)) {
+                    continue;
+                }
+                int color = config.getInt(configKey);
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "Found watch face config key: " + configKey + " -> "
+                            + Integer.toHexString(color));
+                }
+         //       if (updateUiForKey(configKey, color)) {
+         //           uiUpdated = true;
+         //       }
+            }
+            if (uiUpdated) {
+                invalidate();
+            }
+        }
+
         private boolean shouldTimerBeRunning() {
             return isVisible() && !isInAmbientMode();
         }
 
-        private void setupVoiceTranscription() {
-            CapabilityApi.GetCapabilityResult result =
-                    Wearable.CapabilityApi.getCapability(
-                            mGoogleApiClient, Consts.VOICE_TRANSCRIPTION_CAPABILITY_NAME,
-                            CapabilityApi.FILTER_REACHABLE).await();
 
-            CapabilityApi.CapabilityListener capabilityListener =
-                    new CapabilityApi.CapabilityListener() {
-                        @Override
-                        public void onCapabilityChanged(CapabilityInfo capabilityInfo) {
-                            updateTranscriptionCapability(capabilityInfo);
-                        }
-                    };
-
-            Wearable.CapabilityApi.addCapabilityListener(
-                    mGoogleApiClient,
-                    capabilityListener,
-                    Consts.VOICE_TRANSCRIPTION_CAPABILITY_NAME);
-
-            updateTranscriptionCapability(result.getCapability());
-        }
-
-        private void updateTranscriptionCapability(CapabilityInfo capabilityInfo) {
-            LogInfo("updateTranscriptionCapability");
-
-        }
 
         private Collection<String> getNodes() {
             HashSet<String> results = new HashSet<String>();
@@ -857,6 +931,29 @@ public abstract class BaseSailingWatchFace extends CanvasWatchFaceService {
                 results.add(node.getId());
             }
             return results;
+        }
+
+        private class WeatherTask extends AsyncTask<String,Void,WeatherClass>{
+
+            @Override
+            protected WeatherClass doInBackground(String... params) {
+                Gson gson = new Gson();
+                WeatherClass result=null;
+                String weatherString = params[0];
+                try {
+                    result = gson.fromJson(weatherString, WeatherClass.class);
+                }catch(Exception e){
+                    Log.e(TAG,e.getMessage());
+                }
+
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(WeatherClass weatherClass) {
+//                super.onPostExecute(weatherClass);
+                mWeather=weatherClass;
+            }
         }
     }
 

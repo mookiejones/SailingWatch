@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:paddingTop="@dimen/card_margin" >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:columnOrderPreserved="true"
+        android:rowCount="6"
+        android:rowOrderPreserved="true"
+        android:useDefaultMargins="true" >
+
+        <TextView
+            android:id="@+id/Latitude"
+            style="@style/labelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:text="@string/latitude" />
+
+        <TextView
+            android:id="@+id/txtLatitude"
+            style="@style/valueStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/latitude" />
+
+        <TextView
+            android:id="@+id/Longitude"
+            style="@style/labelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:text="@string/longitude" />
+
+        <TextView
+            android:id="@+id/txtLongitude"
+            style="@style/valueStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:text="@string/longitude" />
+
+        <TextView
+            android:id="@+id/Velocity"
+            style="@style/labelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:text="@string/speed" />
+
+        <TextView
+            android:id="@+id/txtVelocity"
+            style="@style/valueStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:text="@string/speed" />
+
+        <com.afrayedknot.sailing.CompassView
+            android:id="@+id/compass"
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:layout_column="0"
+            android:layout_gravity="bottom"
+            android:layout_row="4" />
+
+        <RelativeLayout
+            android:id="@+id/tips_container"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_column="0"
+            android:layout_row="5"
+            android:alpha="0"
+            android:background="@drawable/gradient50" >
+
+            <TextView
+                android:id="@+id/tips_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/card_margin"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </RelativeLayout>
+    </GridLayout>
+
+</FrameLayout>

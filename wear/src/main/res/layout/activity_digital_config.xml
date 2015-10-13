@@ -16,6 +16,7 @@
 <android.support.wearable.view.WearableFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -23,39 +24,50 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/config_activity_background">
-    <TextView
-        android:id="@+id/header"
+    android:layout_margin="24sp"
+>
+    <!--
+        android:background="@color/config_activity_background"
+        -->
+<LinearLayout
+    android:orientation="vertical"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="24sp"
+    android:textColor="@color/config_activity_header_text_color"
+    android:text="@string/unit_type"
+    android:fontFamily="sans-serif-condensed-light"
+    app:layout_box="left|top"
+    android:textAlignment="gravity"
+    android:gravity="center_horizontal" />
+    <Spinner
+        android:id="@+id/unit_selection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginRight="16dp"
+
+        android:gravity="center_horizontal"/>
+
+
+    <CheckBox
+        android:id="@+id/use_nautical"
         android:textSize="24sp"
-        android:textColor="@color/config_activity_header_text_color"
-        android:text="@string/digital_background_color"
         android:fontFamily="sans-serif-condensed-light"
-        app:layout_box="left|top"/>
-    <android.support.wearable.view.WearableListView
-        android:id="@+id/color_picker"
+
+        android:text="@string/use_nautical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        app:layout_box="left|right"/>
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/config_activity_header_text_color" />
 
-
+</LinearLayout>
 </android.support.wearable.view.BoxInsetLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="14dp"
-        android:textSize="24sp"
-        android:text="@string/digital_text_size"
-        android:fontFamily="sans-serif-condensed-light"
-        app:layout_box="left|top"/>
-    <NumberPicker
-        android:id="@+id/number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"/>
+
 </android.support.wearable.view.WearableFrameLayout>

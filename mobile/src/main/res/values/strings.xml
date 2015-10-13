@@ -42,5 +42,6 @@
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
     <string name="title_activity_photo_viewer">Photo Viewer</string>
+    <string name="tilt_config_text">TiltConfigText</string>
 
 </resources>

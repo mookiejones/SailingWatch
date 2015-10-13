@@ -51,4 +51,8 @@ public class MainActivityTest extends ActivityTestCase {
 
 
     }
+
+    public void testLocation(){
+        Assert.assertTrue("works",true);
+    }
 }

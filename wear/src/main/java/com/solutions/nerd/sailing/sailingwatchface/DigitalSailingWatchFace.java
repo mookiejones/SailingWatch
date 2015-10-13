@@ -24,6 +24,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 
 /**
@@ -53,9 +54,10 @@ public class DigitalSailingWatchFace extends BaseSailingWatchFace {
         private final String TAG=DigitalEngine.class.getSimpleName();
 
 
+        @Override
+        public void onMessageReceived(MessageEvent messageEvent) {
 
-
-
+        }
     }
 
 }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="gdk-android-23">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Android/Sdk/add-ons/addon-google_gdk-google-19/libs/gdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

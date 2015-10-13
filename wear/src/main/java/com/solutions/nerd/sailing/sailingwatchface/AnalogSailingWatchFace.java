@@ -22,6 +22,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.wearable.MessageEvent;
+
 /**
  * Analog watch face with a ticking second hand. In ambient mode, the second hand isn't shown. On
  * devices with low-bit ambient mode, the hands are drawn without anti-aliasing in ambient mode.
@@ -37,8 +39,6 @@ public class AnalogSailingWatchFace extends BaseSailingWatchFace {
     }
 
     private class AnalogEngine extends BaseWatchEngine {
-        private final String TAG=AnalogEngine.class.getSimpleName();
-
         Paint mHandPaint;
 
 
@@ -119,7 +119,9 @@ public class AnalogSailingWatchFace extends BaseSailingWatchFace {
         }
 
 
+        @Override
+        public void onMessageReceived(MessageEvent messageEvent) {
 
-
+        }
     }
 }

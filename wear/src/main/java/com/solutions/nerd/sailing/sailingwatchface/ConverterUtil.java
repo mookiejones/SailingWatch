@@ -95,7 +95,7 @@ class ConverterUtil
 
     // converts km to knots
     public static double convertKMToKnots(double speed){
-        return speed * 1943.844492441;
+        return speed * 1.94384449;
     }
 
     // converts km to mph

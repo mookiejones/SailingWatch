@@ -155,7 +155,6 @@ public class DataInfo {
     }
     public void setData(DataMap data){
         getData(data);
-
     }
 
     private void getData(DataMap data){

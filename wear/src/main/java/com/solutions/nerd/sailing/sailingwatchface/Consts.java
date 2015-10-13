@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 class Consts {
 
 
+    public static final String NO_GPS_MSG="This hardware doesn't have GPS.";
     public static final String PATH_WEATHER="/weather";
     public static final String PATH_LOCATION="/location";
 
@@ -22,6 +23,7 @@ class Consts {
     public static final String KEY_WEATHER_UPDATE_TIME = "Update_Time";
     public static final String PATH_CONFIG = "/WeatherWatchFace/Config/";
     public static final String PATH_WEATHER_INFO = "/WeatherWatchFace/WeatherInfo";
+    public static final String PATH_LOCATION_INFO = "/WeatherWatchFace/LocationInfo";
     public static final String PATH_WEATHER_REQUIRE = "/WeatherService/Require";
     public static final String COLON_STRING = ":";
     public static final String PACKAGE_NAME = Consts.class.getPackage().getName();
