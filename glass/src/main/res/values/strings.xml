@@ -48,6 +48,7 @@
         <item>north north west</item>
     </string-array>
 
+
     <!-- Warning messages. -->
     <string name="pitch_too_steep">Keep Glass horizontal to use the compass</string>
     <string name="magnetic_interference">Glass is detecting too much interference</string>
@@ -67,4 +68,8 @@
 
     <!--  Voice Strings -->
     <string name="GO_SAILING">Go Sailing</string>
+    <string name="latitude_label">Latitude:</string>
+    <string name="longitude_label">Longitude:</string>
+    <string name="bearing_label">Bearing:</string>
+    <string name="speed_label">Speed:</string>
 </resources>

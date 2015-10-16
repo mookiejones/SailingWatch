@@ -10,7 +10,6 @@ public class UnitUtils {
     public enum UnitType{Metric,Imperial,Nautical}
     public static String getVelocity(UnitType unit,float value)
     {
-        Log.i("Velocity ", String.valueOf(value));
         if (unit==UnitType.Metric)
             return String.format("%.2f kph",value * mPerSec2KM);
         if (unit==UnitType.Imperial)

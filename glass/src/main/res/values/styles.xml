@@ -6,6 +6,13 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
+    <style name="textValue">
+        <item name="android:textSize">12dp</item>
+    </style>
+    <style name="textLabel">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="labelStyle"  parent="@android:style/Theme.DeviceDefault">
         <item name="android:layout_column">0</item>
 

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/black"
     android:paddingTop="@dimen/card_margin" >
-
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,56 +13,80 @@
         android:rowCount="6"
         android:rowOrderPreserved="true"
         android:useDefaultMargins="true" >
-
-        <TextView
-            android:id="@+id/Latitude"
-            style="@style/labelStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:text="@string/latitude" />
+            android:orientation="horizontal"
+            >
 
-        <TextView
-            android:id="@+id/txtLatitude"
-            style="@style/valueStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/latitude" />
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/latitudeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/latitude_label"
+                style="@style/textLabel" />
 
-        <TextView
-            android:id="@+id/Longitude"
-            style="@style/labelStyle"
+            <TextView
+                android:id="@+id/longitudeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/longitude_label"
+                style="@style/textLabel" />
+
+            <TextView
+                android:id="@+id/bearingLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bearing_label"
+                style="@style/textLabel" />
+            <TextView
+                android:id="@+id/speedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/speed_label"
+                style="@style/textLabel" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:text="@string/longitude" />
+            android:orientation="vertical"
+
+            android:layout_marginLeft="20dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/latitude"
+            android:textSize="12dp"
+            style="@style/textValue" />
 
         <TextView
-            android:id="@+id/txtLongitude"
-            style="@style/valueStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:text="@string/longitude" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/longitude"
+            android:textSize="12dp"
+            style="@style/textValue" />
 
         <TextView
-            android:id="@+id/Velocity"
-            style="@style/labelStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="3"
-            android:text="@string/speed" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bearing"
+            style="@style/textValue" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        <TextView
-            android:id="@+id/txtVelocity"
-            style="@style/valueStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="3"
-            android:text="@string/speed" />
+                android:id="@+id/speed"
+                style="@style/textValue" />
+            </LinearLayout>
+</LinearLayout>
 
-        <com.afrayedknot.sailing.CompassView
+        <com.solutions.nerd.sailing.glass.CompassView
             android:id="@+id/compass"
             android:layout_width="match_parent"
             android:layout_height="90px"

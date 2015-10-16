@@ -19,8 +19,7 @@ package com.solutions.nerd.sailing.glass;
  */
 
 
-
-        import android.hardware.GeomagneticField;
+import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,10 +30,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 
-        import com.solutions.nerd.sailing.glass.util.MathUtils;
+import com.solutions.nerd.sailing.glass.util.LogUtils;
+import com.solutions.nerd.sailing.glass.util.MathUtils;
 
-        import java.util.LinkedHashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +44,8 @@ import java.util.concurrent.TimeUnit;
  * Collects and communicates information about the user's current orientation and location.
  */
 public class OrientationManager {
+    private static final String TAG = OrientationManager.class.getSimpleName();
+
 
     /**
      * The minimum distance desired between location notifications.
@@ -109,7 +112,6 @@ public class OrientationManager {
     private boolean mHasInterference;
 
 
-
     /**
      * The sensor listener used by the orientation manager.
      */
@@ -154,6 +156,7 @@ public class OrientationManager {
     private LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
+
             mLocation = location;
             updateGeomagneticField();
             notifyLocationChanged();
@@ -162,16 +165,22 @@ public class OrientationManager {
         @Override
         public void onProviderDisabled(String provider) {
             // Don't need to do anything here.
+            LogUtils.LogInfo(TAG, "onProviderDisabled");
+
         }
 
         @Override
         public void onProviderEnabled(String provider) {
             // Don't need to do anything here.
+            LogUtils.LogInfo(TAG, "onProviderEnabled");
+
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             // Don't need to do anything here.
+            LogUtils.LogInfo(TAG, "onStatusChanged");
+
         }
     };
 
@@ -208,18 +217,13 @@ public class OrientationManager {
      */
     public void start() {
         if (!mTracking) {
-            mSensorManager.registerListener(mSensorListener,
-                    mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
-                    SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_UI);
 
-            // The rotation vector sensor doesn't give us accuracy updates, so we observe the
-            // magnetic field sensor solely for those.
-            mSensorManager.registerListener(mSensorListener,
-                    mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                    SensorManager.SENSOR_DELAY_UI);
+            /* The rotation vector sensor doesn't give us accuracy updates, so we observe the
+               magnetic field sensor solely for those.*/
+            mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_UI);
 
-            Location lastLocation = mLocationManager
-                    .getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            Location lastLocation = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
             if (lastLocation != null) {
                 long locationAge = lastLocation.getTime() - System.currentTimeMillis();
                 if (locationAge < MAX_LOCATION_AGE_MILLIS) {
@@ -230,12 +234,16 @@ public class OrientationManager {
 
             Criteria criteria = new Criteria();
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            criteria.setBearingRequired(false);
-            criteria.setSpeedRequired(false);
+            criteria.setBearingRequired(true);
+            criteria.setSpeedRequired(true);
+//            criteria.setBearingRequired(false);
+//            criteria.setSpeedRequired(false);
 
             List<String> providers =
                     mLocationManager.getProviders(criteria, true /* enabledOnly */);
             for (String provider : providers) {
+                //MILLIS_BETWEEN_LOCATIONS
+                //METERS_BETWEEN_LOCATIONS
                 mLocationManager.requestLocationUpdates(provider,
                         MILLIS_BETWEEN_LOCATIONS, METERS_BETWEEN_LOCATIONS, mLocationListener,
                         Looper.getMainLooper());
@@ -251,6 +259,10 @@ public class OrientationManager {
      */
     public void stop() {
         if (mTracking) {
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+                Log.d(TAG, "stop");
+            }
+
             mSensorManager.unregisterListener(mSensorListener);
             mLocationManager.removeUpdates(mLocationListener);
             mTracking = false;
@@ -264,6 +276,10 @@ public class OrientationManager {
      * @return true if there is magnetic interference, otherwise false
      */
     public boolean hasInterference() {
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "hasInterference");
+        }
+
         return mHasInterference;
     }
 
@@ -273,6 +289,11 @@ public class OrientationManager {
      * @return true if the user's location is known, otherwise false
      */
     public boolean hasLocation() {
+
+        if (Log.isLoggable(TAG, Log.DEBUG)) {
+            Log.d(TAG, "hasLocation");
+        }
+
         return mLocation != null;
     }
 

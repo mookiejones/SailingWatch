@@ -11,12 +11,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.glass.timeline.DirectRenderingCallback;
 import com.solutions.nerd.sailing.glass.model.Landmarks;
 import com.solutions.nerd.sailing.glass.model.Place;
+import com.solutions.nerd.sailing.glass.util.LogUtils;
 import com.solutions.nerd.sailing.glass.util.UnitUtils;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +31,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class CompassRenderer implements DirectRenderingCallback {
 
-    private static final String TAG = CompassRenderer.class.getSimpleName();
+
+    private final TextView mBearingText;
+    private final TextView mLatitude;
+    private final TextView mLongitude;
+    private final TextView mSpeedText;
 
     /**
      * The (absolute) pitch angle beyond which the compass will display a message telling the user
@@ -54,10 +62,8 @@ public class CompassRenderer implements DirectRenderingCallback {
     private final CompassView mCompassView;
     private final RelativeLayout mTipsContainer;
     private final TextView mTipsView;
-    private final TextView mLatitude;
     private final UnitUtils.UnitType mUnit;
-    private final TextView mLongitude;
-    private final TextView mVelocity;
+
     private final OrientationManager mOrientationManager;
     private final Landmarks mLandmarks;
 
@@ -78,12 +84,13 @@ public class CompassRenderer implements DirectRenderingCallback {
         @Override
         public void onLocationChanged(OrientationManager orientationManager) {
             Location location = orientationManager.getLocation();
+            LogUtils.LogInfo(TAG,String.format("location:%s",location));
+            mLatitude.setText(formatter.format(location.getLatitude()));
+            mLongitude.setText(formatter.format(location.getLongitude()));
+            mBearingText.setText(formatter.format(location.getBearing()));
+            String velocity=UnitUtils.getVelocity(UnitUtils.UnitType.Imperial, location.getSpeed());
+            mSpeedText.setText(velocity);
 
-
-
-            mLatitude.setText(String.format("%.2f",location.getLatitude()));
-            mLongitude.setText(String.format("%.2f",location.getLongitude()));
-            mVelocity.setText(UnitUtils.getVelocity(mUnit, location.getSpeed()));
 
             List<Place> places = mLandmarks.getNearbyLandmarks(location.getLatitude(), location.getLongitude());
             mCompassView.setNearbyPlaces(places);
@@ -91,23 +98,36 @@ public class CompassRenderer implements DirectRenderingCallback {
 
         @Override
         public void onAccuracyChanged(OrientationManager orientationManager) {
+            LogUtils.LogInfo(TAG,"onAccuracyChanged");
             mInterference = orientationManager.hasInterference();
             updateTipsView();
         }
     };
+
+    private static final String TAG="CompassRenderer";
+
+
+    private final Context mContext;
 
     /**
      * Creates a new instance of the {@code CompassRenderer} with the specified context,
      * orientation manager, and landmark collection.
      */
     public CompassRenderer(Context context, OrientationManager orientationManager,Landmarks landmarks) {
+
+        mContext=context;
         LayoutInflater inflater = LayoutInflater.from(context);
+
         mLayout = (FrameLayout) inflater.inflate(R.layout.compass, null);
+
+        mBearingText=(TextView)mLayout.findViewById(R.id.bearing);
+        mLatitude=(TextView)mLayout.findViewById(R.id.latitude);
+        mLongitude=(TextView)mLayout.findViewById(R.id.longitude);
+        mSpeedText=(TextView)mLayout.findViewById(R.id.speed);
+
         mLayout.setWillNotDraw(false);
 
-        mLatitude=(TextView)mLayout.findViewById(R.id.txtLatitude);
-        mLongitude=(TextView)mLayout.findViewById(R.id.txtLongitude);
-        mVelocity=(TextView)mLayout.findViewById(R.id.txtVelocity);
+
         mCompassView = (CompassView) mLayout.findViewById(R.id.compass);
         mTipsContainer = (RelativeLayout) mLayout.findViewById(R.id.tips_container);
         mTipsView = (TextView) mLayout.findViewById(R.id.tips_view);
@@ -120,6 +140,8 @@ public class CompassRenderer implements DirectRenderingCallback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+
         mSurfaceWidth = width;
         mSurfaceHeight = height;
         doLayout();
@@ -127,6 +149,10 @@ public class CompassRenderer implements DirectRenderingCallback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        LogUtils.LogInfo(TAG,"surfaceCreated");
+
+
+
         // The creation of a new Surface implicitly resumes the rendering.
         mRenderingPaused = false;
         mHolder = holder;
@@ -135,18 +161,22 @@ public class CompassRenderer implements DirectRenderingCallback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+
         mHolder = null;
         updateRenderingState();
     }
 
     @Override
     public void renderingPaused(SurfaceHolder holder, boolean paused) {
+
         mRenderingPaused = paused;
         updateRenderingState();
     }
 
+    private static final NumberFormat formatter = new DecimalFormat("#0.00");
 
     private void updateRenderingState() {
+
         boolean shouldRender = (mHolder != null) && !mRenderingPaused;
         boolean isRendering = (mRenderThread != null);
 
@@ -155,10 +185,13 @@ public class CompassRenderer implements DirectRenderingCallback {
                 mOrientationManager.addOnChangedListener(mCompassListener);
                 mOrientationManager.start();
 
+
+
                 if (mOrientationManager.hasLocation()) {
                     Location location = mOrientationManager.getLocation();
-                    List<Place> nearbyPlaces = mLandmarks.getNearbyLandmarks(
-                            location.getLatitude(), location.getLongitude());
+                    List<Place> nearbyPlaces = mLandmarks.getNearbyLandmarks(location.getLatitude(), location.getLongitude());
+
+
                     mCompassView.setNearbyPlaces(nearbyPlaces);
                 }
 
@@ -170,7 +203,6 @@ public class CompassRenderer implements DirectRenderingCallback {
 
                 mOrientationManager.removeOnChangedListener(mCompassListener);
                 mOrientationManager.stop();
-
             }
         }
     }

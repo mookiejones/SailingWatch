@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.solutions.nerd.sailing.glass.model.Place;
+import com.solutions.nerd.sailing.glass.util.LogUtils;
 import com.solutions.nerd.sailing.glass.util.MathUtils;
 
 import java.text.NumberFormat;
@@ -71,6 +72,8 @@ public class CompassView extends View {
     private List<Place> mNearbyPlaces;
 
     private final Paint mPaint;
+    private final Paint mValuePaint;
+    private final Paint mLabelPaint;
     private final Paint mTickPaint;
     private final Path mPath;
     private final TextPaint mPlacePaint;
@@ -104,6 +107,24 @@ public class CompassView extends View {
             mPaint.setAntiAlias(true);
             mPaint.setTextSize(DIRECTION_TEXT_HEIGHT);
             mPaint.setTypeface(Typeface.create("sans-serif-thin", Typeface.NORMAL));
+
+            mValuePaint = new Paint();
+            mValuePaint.setStyle(Paint.Style.FILL);
+            mValuePaint.setAntiAlias(true);
+            mValuePaint.setTextSize(DIRECTION_TEXT_HEIGHT);
+            mValuePaint.setColor(Color.WHITE);
+            mValuePaint.setTypeface(Typeface.create("sans-serif-thin", Typeface.NORMAL));
+
+            mLabelPaint = new Paint();
+            mLabelPaint.setStyle(Paint.Style.FILL);
+            mLabelPaint.setAntiAlias(true);
+            mLabelPaint.setColor(Color.WHITE);
+
+            mLabelPaint.setTextSize(DIRECTION_TEXT_HEIGHT);
+            mLabelPaint.setTypeface(Typeface.create("sans-serif-thin", Typeface.BOLD));
+
+
+
 
             mTickPaint = new Paint();
             mTickPaint.setStyle(Paint.Style.STROKE);
@@ -146,6 +167,8 @@ public class CompassView extends View {
             mTextBounds=new Rect();
             mAllBounds=new ArrayList<Rect>();
             mPaint=new Paint();
+            mLabelPaint=new Paint();
+            mValuePaint=new Paint();
             mDistanceFormat=null;
             mPlaceBitmap=null;
             mPlacePaint = new TextPaint();
@@ -225,8 +248,9 @@ public class CompassView extends View {
         mPaint.setColor(NEEDLE_COLOR);
         drawNeedle(canvas, false);
         drawNeedle(canvas, true);
-
     }
+
+
 
     /**
      * Draws the compass direction strings (N, NW, W, etc.).
@@ -260,9 +284,11 @@ public class CompassView extends View {
         }
     }
 
+    private static final String TAG = CompassView.class.getSimpleName();
     private void drawOrientation(Canvas canvas,float rX, float rY, float rZ)
     {
-
+        String format = String.format("rx: %s,ry: %s,rz: %s",rX,rY,rZ);
+        LogUtils.LogInfo(TAG,format);
     }
 
 
