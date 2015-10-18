@@ -1,12 +1,13 @@
-package com.firstmate.android.util;
+package com.solutions.nerd.sailing.android.util;
 
 /**
  * Created by cberman on 12/29/2014.
  */
 import android.util.Log;
 
-import com.firstmate.android.BuildConfig;
-import com.firstmate.android.Config;
+import com.solutions.nerd.sailing.android.Config;
+import com.solutions.nerd.sailing.BuildConfig;
+
 
 public class LogUtils {
     private static final String LOG_PREFIX = "iosched_";

@@ -1,4 +1,4 @@
-package com.firstmate.android.util;
+package com.solutions.nerd.sailing.android.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,11 +1,10 @@
-package com.firstmate.android.tasks;
+package com.solutions.nerd.sailing.android.tasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.firstmate.android.model.Marina;
-import com.firstmate.android.util.JSONParser;
 import com.google.gson.stream.JsonReader;
+import com.solutions.nerd.sailing.android.model.Marina;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,7 +24,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.firstmate.android.util.LogUtils.LOGD;
 
 /**
  * Created by cberman on 12/29/2014.

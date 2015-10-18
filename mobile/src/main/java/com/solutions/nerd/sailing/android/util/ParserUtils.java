@@ -1,4 +1,4 @@
-package com.firstmate.android.util;
+package com.solutions.nerd.sailing.android.util;
 
 /**
  * Created by cberman on 12/16/2014.

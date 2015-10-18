@@ -6,7 +6,7 @@ import android.net.Uri;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
-
+import com.solutions.nerd.sailing.android.util.ParserUtils;
 /**
  * Created by cberman on 12/16/2014.
  */

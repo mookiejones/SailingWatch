@@ -1,9 +1,9 @@
-package com.firstmate.android.model;
+package com.solutions.nerd.sailing.android.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.android.gms.maps.model.Marker;
-import com.google.maps.android.clustering.ClusterItem;
+//import com.google.maps.android.clustering.ClusterItem;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;

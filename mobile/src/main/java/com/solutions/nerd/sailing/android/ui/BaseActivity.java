@@ -1,13 +1,60 @@
-package com.solutions.nerd.sailing;
+package com.solutions.nerd.sailing.android.ui;
 
 //TODO Need to implement selecting the account toggle.
 //TODO Need to fix the navigation item list to completely expand items
+
+import android.accounts.AccountManager;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.ValueEventListener;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.plus.Account;
+import com.solutions.nerd.sailing.MainActivity;
+import com.solutions.nerd.sailing.android.util.AccountUtils;
+import com.solutions.nerd.sailing.android.util.LoginAndAuthHelper;
+import com.solutions.nerd.sailing.android.util.MarinasUtil;
+import com.solutions.nerd.sailing.sailingwatchface.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * Created by cberman on 12/16/2014.
  */
 public class BaseActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        implements NavigationDrawerFragment
+        .NavigationDrawerCallbacks,
         LoginAndAuthHelper.Callbacks {
 
 

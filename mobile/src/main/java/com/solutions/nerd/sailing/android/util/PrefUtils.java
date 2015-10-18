@@ -1,8 +1,8 @@
-package com.solutions.nerd.sailing.util;
+package com.solutions.nerd.sailing.android.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.solutions.nerd.sailing.Config;
+import com.solutions.nerd.sailing.android.Config;
 import android.preference.PreferenceManager;
 import android.util.Log;
 

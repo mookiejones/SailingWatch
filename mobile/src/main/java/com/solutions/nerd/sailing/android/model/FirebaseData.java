@@ -1,4 +1,4 @@
-package com.firstmate.android.model;
+package com.solutions.nerd.sailing.android.model;
 
 /**
  * Created by cberman on 12/17/2014.

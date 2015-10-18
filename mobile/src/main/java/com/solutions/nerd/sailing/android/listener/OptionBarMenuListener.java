@@ -1,4 +1,4 @@
-package com.firstmate.android.listener;
+package com.solutions.nerd.sailing.android.listener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.firstmate.android.R;
 
 /**
  * Created by cberman on 12/29/2014.

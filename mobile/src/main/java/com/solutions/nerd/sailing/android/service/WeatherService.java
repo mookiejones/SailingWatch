@@ -1,4 +1,4 @@
-package com.solutions.nerd.sailing.sailingwatchface;
+package com.solutions.nerd.sailing.android.service;
 
 import android.content.Context;
 import android.content.Intent;

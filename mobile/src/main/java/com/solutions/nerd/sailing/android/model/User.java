@@ -1,4 +1,4 @@
-package com.firstmate.android.model;
+package com.solutions.nerd.sailing.android.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.android.gms.maps.model.Marker;

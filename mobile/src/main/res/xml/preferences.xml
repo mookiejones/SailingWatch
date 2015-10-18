@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:firstmate="http://schemas.android.com/apk/res-auto"
+    android:title="@string/options_title">
+    <PreferenceCategory android:title="@string/general_pref_title">
+        <SwitchPreference
+            android:title="@string/debug_title"
+            android:defaultValue="false"
+            android:summary="@string/debug_summary"
+            android:switchTextOn="@string/text_true"
+            android:switchTextOff="@string/text_false"/>
+        <ListPreference
+            android:title="@string/units_title"
+            android:summary="@string/units_summary"
+            android:key="unitsType"
+            android:defaultValue="1"
+            android:entries="@array/unitsArray"
+            android:entryValues="@array/unitsValue" />
+    </PreferenceCategory>
+    <PreferenceScreen
+        android:title="@string/journey_preference_category"
+        android:summary="@string/journey_preference_summary">
+        <PreferenceCategory android:title="@string/maps">
+        <ListPreference     android:title="@string/map_view_title"
+            android:summary="@string/map_view_summary"
+            android:key="pref_map_view"
+            android:defaultValue="0"
+            android:entries="@array/mapViews"
+            android:entryValues="@array/map_view_values" />
+
+
+        <CheckBoxPreference
+            android:title="@string/marinas"
+            android:key="show_marinas"
+            android:defaultValue="false"
+            android:summary="@string/show_marinas"/>
+        <CheckBoxPreference
+            android:title="@string/action_weather"
+            android:key="show_weather"
+            android:defaultValue="false"
+            android:summary="@string/show_weather"/>
+        <CheckBoxPreference
+            android:title="@string/action_bridges"
+            android:key="show_bridges"
+            android:defaultValue="false"
+            android:summary="@string/show_bridges"/>
+        <CheckBoxPreference
+            android:title="@string/action_poi"
+            android:key="show_poi"
+            android:defaultValue="false"
+            android:summary="@string/show_poi"/>
+        <CheckBoxPreference
+            android:title="@string/action_pictures"
+            android:key="show_pictures"
+            android:defaultValue="false"
+            android:summary="@string/show_pictures"/>
+        <CheckBoxPreference
+            android:title="@string/action_ramps"
+            android:key="show_ramps"
+            android:defaultValue="false"
+            android:summary="@string/show_ramps"/>
+    </PreferenceCategory>
+        <com.firstmate.android.ui.widget.SeekBarPreference
+            android:key="pref_update_time"
+            android:title="@string/interval_record_point_time_title"
+            android:summary="@string/interval_record_point_time_summary"
+            android:defaultValue="2"
+            firstmate:min="0"
+            firstmate:max="60"
+            firstmate:unitsRight=" /seconds"
+            />
+        <com.firstmate.android.ui.widget.SeekBarPreference
+            android:key="pref_update_distance"
+            android:title="@string/distace_record_point_time_title"
+            android:summary="@string/distance_record_point_time_summary"
+            android:defaultValue="500"
+            firstmate:min="0"
+            firstmate:max="10000"
+            firstmate:unitsRight=" meters"
+            />
+        <ListPreference
+            android:key="pref_update_accuracy"
+            android:title="@string/accuracy_title"
+            android:summary="@string/accuracy_summary"
+            android:defaultValue="0"
+            android:entries="@array/accuracy_requirement_titles"
+            android:entryValues="@array/accuracy_requirement_values"/>
+
+        <PreferenceCategory
+            android:title="@string/options_advanced"
+            android:summary="@string/options_advanced_summary">
+            <com.firstmate.android.ui.widget.SeekBarPreference
+                android:key="pref_overlay_alpha"
+                android:title="@string/overlay_alpha_title"
+                android:summary="@string/overlay_alpha_summary"
+                android:defaultValue="75"
+                firstmate:min="0"
+                firstmate:max="100"
+                firstmate:unitsRight="%"
+                />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+
+
+</PreferenceScreen>

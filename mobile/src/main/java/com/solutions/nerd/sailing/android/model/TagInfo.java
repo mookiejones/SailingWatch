@@ -1,4 +1,4 @@
-package com.firstmate.android.model;
+package com.solutions.nerd.sailing.android.model;
 
 import android.content.Context;
 import android.location.Location;
@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by cberman on 12/16/2014.

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/action_weather"
+        android:id="@+id/weather_item"
+        android:checkable="true"
+        />
+    <item
+        android:title="@string/action_marinas"
+        android:id="@+id/marina_item"
+        android:checkable="true"
+        />
+    <item
+        android:title="@string/action_navaids"
+        android:id="@+id/navaids_item"
+        android:checkable="true"
+    />
+    <item
+        android:title="@string/action_bridges"
+        android:id="@+id/bridges_item"
+        android:checkable="true"
+        />
+    <item
+        android:title="@string/action_anchorages"
+        android:id="@+id/anchorages_item"
+        android:checkable="true"
+        />
+    <item
+        android:title="@string/action_ramps"
+        android:id="@+id/ramps_item"
+        android:checkable="true"
+        />
+    <item
+        android:title="@string/action_poi"
+        android:id="@+id/poi_item"
+        android:checkable="true"
+        />
+    <item
+        android:title="@string/action_pictures"
+        android:id="@+id/pictures_item"
+        android:checkable="true"
+        />
+
+</menu>

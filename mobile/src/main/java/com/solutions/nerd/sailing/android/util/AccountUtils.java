@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.firstmate.android.util;
+package com.solutions.nerd.sailing.android.util;
 
 import android.accounts.Account;
 import android.content.Context;

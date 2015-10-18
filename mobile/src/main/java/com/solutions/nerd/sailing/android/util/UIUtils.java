@@ -1,4 +1,4 @@
-package com.firstmate.android.util;
+package com.solutions.nerd.sailing.android.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,9 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 
-import com.firstmate.android.BuildConfig;
-import com.firstmate.android.Config;
-import com.firstmate.android.R;
+
 
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -34,6 +32,8 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.solutions.nerd.sailing.android.Config;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

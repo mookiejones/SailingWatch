@@ -1,4 +1,4 @@
-package com.firstmate.android.util;
+package com.solutions.nerd.sailing.android.util;
 import com.firstmate.android.BuildConfig;
 import com.firstmate.android.R;
 import com.google.android.gms.analytics.GoogleAnalytics;

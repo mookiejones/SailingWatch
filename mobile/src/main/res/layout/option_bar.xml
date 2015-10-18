@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/slide_up_height">
+
+        <!-- Speed,Direction,Etc -->
+        <TextView
+            style="@style/option_bar_label_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bearing"
+            android:paddingEnd="@dimen/option_text_margin"
+            android:layout_toStartOf="@+id/bearing_act"/>
+        <TextView
+            android:id="@+id/bearing_act"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/option_bar_value_style"
+            android:text="@string/ellipsis"
+            android:layout_marginEnd="@dimen/option_text_margin"
+            android:layout_toStartOf="@+id/fakeView" />
+        <View android:id="@+id/fakeView"
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:background="#FF0000FF"/>
+        <TextView
+            android:id="@+id/speed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/option_bar_label_style"
+            android:text="@string/speed_label"
+            android:layout_toEndOf="@+id/fakeView"
+            android:layout_marginStart="80dp" />
+        <TextView
+            style="@style/option_bar_value_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/ellipsis"
+            android:id="@+id/speed_act"
+            android:layout_toEndOf="@+id/fakeView"
+            android:layout_marginStart="@dimen/option_text_margin"
+           />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/temperature_label"/>
+        <TextView android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/temperature_sample"
+            />
+        </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wind"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wind_direction"/>
+
+        <TextView android:id="@+id/wind_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/temperature_sample"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginStart="20dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wind_gust"/>
+
+        <TextView android:id="@+id/wind_gust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/temperature_sample"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

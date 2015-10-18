@@ -1,4 +1,4 @@
-package com.firstmate.android.model;
+package com.solutions.nerd.sailing.android.model;
 
 import android.support.annotation.NonNull;
 

@@ -16,3 +16,12 @@ allprojects {
         jcenter()
     }
 }
+dependencies {
+//    compile 'com.google.android.gms:play-services-identity:8.1.0'
+//    compile 'com.google.android.gms:play-services-gcm:8.1.0'
+}
+
+/*android {
+    compileSdkVersion 23
+    buildToolsVersion '22.0.1'
+}*/

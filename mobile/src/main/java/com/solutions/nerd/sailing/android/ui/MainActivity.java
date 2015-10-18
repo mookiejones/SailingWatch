@@ -1,5 +1,24 @@
-package com.solutions.nerd.sailing;
+package com.solutions.nerd.sailing.android.ui;
 
+
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.solutions.nerd.sailing.android.R;
+import com.solutions.nerd.sailing.android.ui.BaseActivity;
+import com.solutions.nerd.sailing.android.util.AccountUtils;
+import com.solutions.nerd.sailing.android.util.AnalyticsManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
