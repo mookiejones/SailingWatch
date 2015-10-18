@@ -85,9 +85,27 @@ public class CompassRenderer implements DirectRenderingCallback {
         public void onLocationChanged(OrientationManager orientationManager) {
             Location location = orientationManager.getLocation();
             LogUtils.LogInfo(TAG,String.format("location:%s",location));
+
+
             mLatitude.setText(formatter.format(location.getLatitude()));
             mLongitude.setText(formatter.format(location.getLongitude()));
-            mBearingText.setText(formatter.format(location.getBearing()));
+
+            if (location.hasBearing()){
+                // Change visibility
+                mBearingText.setVisibility(Visible);
+                mBearingText.setText(formatter.format(location.getBearing()));
+            }else{
+                // Set to not visible
+                mBearingText.setVisibility(INVISIBLE);
+            }
+
+            if (location.hasVelocity()){
+                // Change visibility
+
+            }else{
+                // Set to invisible
+            }
+
             String velocity=UnitUtils.getVelocity(UnitUtils.UnitType.Imperial, location.getSpeed());
             mSpeedText.setText(velocity);
 
