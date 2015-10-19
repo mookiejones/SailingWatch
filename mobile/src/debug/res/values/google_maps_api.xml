@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="google_maps_key_instructions">
+        <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=F0:BE:D3:E7:B3:22:6C:08:C6:DA:5E:38:5C:9E:B7:FF:F5:47:33:94%3Bcom.firstmate.android
+
+    You can also add your credentials to an existing key, using this line:
+    F0:BE:D3:E7:B3:22:6C:08:C6:DA:5E:38:5C:9E:B7:FF:F5:47:33:94;com.firstmate.android
+
+     MD5:  16:56:3A:E0:F2:22:73:C3:7B:47:E4:AD:3A:8A:80:BE
+	 SHA1: 96:E3:20:6A:FF:50:60:68:02:A3:C8:AA:E0:7C:BB:CD:22:CB:17:A2
+	 SHA256: 47:5F:CC:CA:48:6A:27:7B:4B:D2:E6:A4:8B:8B:0D:A5:E1:FB:19:5F:F9:EC:D1:19:13:AF:B6:7A:8E:80:54:D1
+
+
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+        -->
+    </string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyDJd8os8ne0zTKCVcX9TVvEFp9ozg8c7e0</string>
+
+</resources>
