@@ -44,4 +44,156 @@
     <string name="title_activity_photo_viewer">Photo Viewer</string>
     <string name="tilt_config_text">TiltConfigText</string>
 
+
+    <!-- Migrated items -->
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_create_journey">Create Journey</string>
+
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
+are being displayed. Themes are major categories for sessions (the themes are Design,
+Develop and Distribute). -->
+    <string name="all_themes">All Themes</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
+are being displayed. Topics are major categories for sessions (example topics are: Android,
+Chrome, Google APIs, Wearables, etc). -->
+    <string name="all_topics">All Topics</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all session types
+    are being displayed. Some examples of session types are: session, office hours, code lab. -->
+    <string name="all_types">All Types</string>
+
+    <!-- Short text label indicating a grouping of themes -->
+    <string name="themes">Themes</string>
+    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
+    <string name="welcome_text">Before we begin, here is some important legal information regarding your use of this app. This will only take a minute!</string>
+    <string name="ellipsis">...</string>
+    <!-- Short text label indicating a grouping of topics -->
+    <string name="topics">Topics</string>
+    <string name="types">Types</string>
+    <string name="string_create_point">Create Point</string>
+    <string name="action_record_points">Record points</string>
+    <string name="session_finished">session finished</string>
+    <string name="unknown_room">unknown room</string>
+    <string name="session_subtitle">session subtitle</string>
+    <string name="live_available">live available</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">End User License Agreement</string>
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="beta_text">This is a Beta Version and should not be used for navigation!</string>
+
+    <!-- Welcome layout -->
+    <string name="welcome_to_first_mate">Welcome to First Mate</string>
+
+
+    <!-- Button text -->
+    <string name="btn_logout_from_google">Logout from Google</string>
+    <string name="btn_revoke_access">Revoke Access</string>
+    <string name="google_account_required_title">Google Account Required</string>
+    <string name="google_account_required_message">Google account is required</string>
+    <string name="add_account">Add Account</string>
+    <string name="not_now">Not now</string>
+
+
+    <string name="recording_locations_title">Recording Locations</string>
+    <string name="recording_locations_text">Recording Locations and adding to map.</string>
+    <string name="journey_preference_category">Journey Preferences</string>
+    <string name="general_pref_title">General</string>
+    <string name="options_title">Options</string>
+    <string name="debug_title">Debug</string>
+    <string name="text_true">True</string>
+    <string name="text_false">False</string>
+    <string name="debug_summary">Switches Options for debugging values</string>
+    <string name="record_point_time_title">Record point Interval</string>
+    <string name="record_point_time_summary">Amount of time elapsed between saving time</string>
+    <string name="interval_record_point_time_title">Record point interval time</string>
+    <string name="interval_record_point_time_summary">Elapsed time between saving points</string>
+    <string name="distance_record_point_time_summary">Minimum distance between recording points</string>
+    <string name="distace_record_point_time_title">Record point distance</string>
+    <string name="units_title">Units</string>
+    <string name="units_summary">Units of measurement.</string>
+    <string name="no_connection_cant_login">No connection available... cannot login.</string>
+    <string name="title_show_journeys">Journeys</string>
+    <string name="welcome">welcome</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyDJd8os8ne0zTKCVcX9TVvEFp9ozg8c7e0</string>
+    <string name="bearing">Bearing</string>
+    <string name="bearing_sample" >120</string>
+    <string name="speed_label">Speed</string>
+    <string name="speed_sample">1.2</string>
+    <string name="action_weather">Weather</string>
+    <string name="action_marinas">Marinas</string>
+    <string name="action_navaids">Navigational Aids</string>
+    <string name="action_bridges">Bridges</string>
+    <string name="action_anchorages">Anchorages</string>
+    <string name="action_ramps">Boat Ramps</string>
+    <string name="action_poi">Points of interest</string>
+    <string name="action_pictures">Pictures</string>
+    <string name="maps">Maps</string>
+    <string name="show_marinas">Show Marinas</string>
+    <string name="marinas">Marinas</string>
+    <string name="show_weather">Show Weather</string>
+    <string name="show_bridges">Show Bridges</string>
+    <string name="show_ramps">Show Ramps</string>
+    <string name="show_poi">Show Points of interest</string>
+    <string name="show_pictures">Show nearby photos</string>
+    <string name="map_view_title">Map Views</string>
+    <string name="map_view_summary">Select how you would like your map viewed</string>
+    <string name="overlay_alpha_title">Overlay Transparency</string>
+    <string name="overlay_alpha_summary">Set Transparancy for Raster Map</string>
+    <string name="journey_preference_summary">Options for Journeys</string>
+    <string name="options_advanced">Advanced</string>
+    <string name="options_advanced_summary">Advanced Options that should only be changed if you know what you are doing.</string>
+    <string name="headings_value">Headings</string>
+    <string name="large_text">Large Text</string>
+    <string name="accuracy_summary">Accuracy requirement for GPS Satellite</string>
+    <string name="accuracy_title">Accuracy</string>
+    <string name="remove_marker">Remove Marker</string>
+    <string name="temperature_sample">34F</string>
+    <string name="temperature_label">Temperature</string>
+    <string name="wind">Wind</string>
+    <string name="wind_gust">Gust</string>
+    <string name="wind_direction">Direction</string>
+
+    <!-- Titles -->
+    <string-array name="titles">
+        <item>Journeys</item>
+        <item>Maintenance</item>
+        <item>Compass</item>
+        <item>Blog</item>
+        <item>About</item>
+        <item>Settings</item>
+    </string-array>
+
+    <!-- replace these -->
+    <string-array name="listArray">
+        <item>Headings</item>
+        <item>Headings and Details</item>
+        <item>All Data</item>
+    </string-array>
+
+
+    <string-array name="listValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="unitsArray">
+        <item>Knots</item>
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
+    <string-array name="unitsValue">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>

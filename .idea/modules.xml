@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SailingWatch.iml" filepath="$PROJECT_DIR$/SailingWatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SailingWatchFace.iml" filepath="$PROJECT_DIR$/SailingWatchFace.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobile/mobile.iml" filepath="$PROJECT_DIR$/mobile/mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
     </modules>

@@ -11,5 +11,49 @@
 
     <color name="black_overlay">#66000000</color>
 
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentPressed">#F8BBD0</color>
+    <color name="colorTextIcons">#FFFFFF</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#727272</color>
+    <color name="colorDivider">#B6B6B6</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="background">#e5e5e5</color>
+    <color name="half_black">#808080</color>
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#805677fc</color>
+    <color name="blue_semi_transparent_pressed">#80738ffe</color>
 
+    <color name="transparent">#00000000</color>
+
+    <color name="body_text_disabled">#44000000</color>
+
+    <color name="theme_accent_1">#00b0ff</color>
+
+    <color name="theme_accent_1_light">#8ad4fa</color>
+    <color name="body_text_1_inverse">#deffffff</color>
+
+    <color name="body_text_2_inverse">#8affffff</color>
+
+    <color name="nav_drawer_background">#C5CAE9</color>
+    <color name="navdrawer_background">#ffffffff</color>
+
+    <color name="navdrawer_text_color_selected">@color/colorPrimary</color>
+
+    <color name="navdrawer_icon_tint">#888</color>
+
+    <color name="navdrawer_icon_tint_selected">@color/colorPrimary</color>
+    <color name="session_photo_scrim">#6000</color>
+
+    <color name="default_session_color">@color/colorPrimary</color>
+
+    <!-- Colors for Starting and stopping of recording points -->
+    <color name="record_start">#00FF00</color>
+    <color name="record_stop">#FF0000</color>
 </resources>

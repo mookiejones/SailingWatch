@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_layout"
@@ -17,20 +15,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <!-- Map Fragment -->
-    <fragment
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
-        tools:context=".ui.MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        map:mapType="satellite"
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"
+            tools:context=".ui.MapsActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            tools:layout="@layout/abc_screen_simple" />
+        <!--
+                map:mapType="satellite"
         map:uiCompass="true"
         map:uiRotateGestures="true"
         map:uiScrollGestures="true"
         map:uiZoomControls="false"
         map:uiZoomGestures="true"
-        tools:layout="@layout/abc_screen_simple" />
+-->
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/remove_marker"
             android:layout_width="wrap_content"
@@ -84,13 +83,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <include
+      <include
             android:id="@+id/optionbar"
             layout="@layout/option_bar"/>
 
         <LinearLayout
             android:id="@+id/nav_console"
-            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:visibility="gone">
 

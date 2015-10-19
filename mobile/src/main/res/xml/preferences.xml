@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:firstmate="http://schemas.android.com/apk/res-auto"
+    xmlns:nerdsolutions="http://schemas.android.com/apk/res-auto"
     android:title="@string/options_title">
     <PreferenceCategory android:title="@string/general_pref_title">
         <SwitchPreference
@@ -60,23 +60,24 @@
             android:defaultValue="false"
             android:summary="@string/show_ramps"/>
     </PreferenceCategory>
-        <com.firstmate.android.ui.widget.SeekBarPreference
+
+        <com.solutions.nerd.sailing.android.ui.widget.SeekBarPreference
             android:key="pref_update_time"
             android:title="@string/interval_record_point_time_title"
             android:summary="@string/interval_record_point_time_summary"
             android:defaultValue="2"
-            firstmate:min="0"
-            firstmate:max="60"
-            firstmate:unitsRight=" /seconds"
+            nerdsolutions:min="0"
+            nerdsolutions:max="60"
+            nerdsolutions:unitsRight=" /seconds"
             />
-        <com.firstmate.android.ui.widget.SeekBarPreference
+        <com.solutions.nerd.sailing.android.ui.widget.SeekBarPreference
             android:key="pref_update_distance"
             android:title="@string/distace_record_point_time_title"
             android:summary="@string/distance_record_point_time_summary"
             android:defaultValue="500"
-            firstmate:min="0"
-            firstmate:max="10000"
-            firstmate:unitsRight=" meters"
+            nerdsolutions:min="0"
+            nerdsolutions:max="10000"
+            nerdsolutions:unitsRight=" meters"
             />
         <ListPreference
             android:key="pref_update_accuracy"
@@ -89,14 +90,14 @@
         <PreferenceCategory
             android:title="@string/options_advanced"
             android:summary="@string/options_advanced_summary">
-            <com.firstmate.android.ui.widget.SeekBarPreference
+            <com.solutions.nerd.sailing.android.ui.widget.SeekBarPreference
                 android:key="pref_overlay_alpha"
                 android:title="@string/overlay_alpha_title"
                 android:summary="@string/overlay_alpha_summary"
                 android:defaultValue="75"
-                firstmate:min="0"
-                firstmate:max="100"
-                firstmate:unitsRight="%"
+                nerdsolutions:min="0"
+                nerdsolutions:max="100"
+                nerdsolutions:unitsRight="%"
                 />
         </PreferenceCategory>
     </PreferenceScreen>
